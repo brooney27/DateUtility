@@ -22,7 +22,7 @@ public class DateUtility {
 	}
 	
 	public static String displayCalendar(int month, int year){
-		GregorianCalendar gc = new GregorianCalendar(year,month,1);
+		GregorianCalendar gc = new GregorianCalendar(year,month-1,1);
 		 
 		String output = ("\t\t\t" + months[month]+ " " + year + "\n");
 		 for(int i = 0; i < 7; i++){
@@ -42,12 +42,55 @@ public class DateUtility {
 			 for(int j = start; j < 7; j++){
 				 output = output+(day + "\t");
 				 day++;
-				 if(day==maxdays[month]+1)break;
+				 if(day==maxdays[month-1]+1)break;
 			 }
 			 output = output + "\n";
 			 start=0;
 		 }
 		 
 		 return output;
+	}
+	
+	public static int daysBetween(int day, int month, int year, int day2, int month2, int year2){
+		GregorianCalendar gc1 = new GregorianCalendar(year,month-1,day);
+		GregorianCalendar gc2 = new GregorianCalendar(year2,month2-1,day2);
+		
+		long DateInMS1 = gc1.getTimeInMillis();
+		long DateInMS2 = gc2.getTimeInMillis();
+		
+		long diff = DateInMS2 - DateInMS1;
+		
+		diff = diff / (24*60*60*1000);
+		
+		int output = (int)diff;
+		
+		return output;
+	}
+	
+	public static int daysBetween(int day, int month, int year){
+		
+		GregorianCalendar gc =new GregorianCalendar();            
+		int tmonth=gc.get(GregorianCalendar.MONTH);            
+		int tday=gc.get(GregorianCalendar.DAY_OF_MONTH);
+		int tyear=gc.get(GregorianCalendar.YEAR);
+		
+		return daysBetween(day, month, year, tday, tmonth, tyear);
+	}
+	
+	public static int daysBetween(String day, String month, String year, String day2, String month2, String year2){
+		
+		int parseD1 = Integer.parseInt(day);
+		int parseM1 = Integer.parseInt(month);
+		int parseY1 = Integer.parseInt(year);
+		int parseD2 = Integer.parseInt(day2);
+		int parseM2 = Integer.parseInt(month2);
+		int parseY2 = Integer.parseInt(year2);
+		
+		return daysBetween(parseD1, parseM1, parseY1, parseD2, parseM2, parseY2);
+	}
+	
+	public static int getDayOfWeek(int month, int day, int year){
+		GregorianCalendar gc = new GregorianCalendar(year,month-1,day);
+		return gc.get(Calendar.DAY_OF_WEEK);
 	}
 }
